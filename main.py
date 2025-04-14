@@ -1,3 +1,9 @@
+'''
+TO DO:
+add custom markers to map, using clip art saved locally
+'''
+
+
 import time
 import pandas
 from geopy.geocoders import Nominatim
