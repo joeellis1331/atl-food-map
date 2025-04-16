@@ -1,6 +1,7 @@
 '''
 TO DO:
-add custom markers to map, using clip art saved locally
+- add custom markers to map, using clip art saved locally
+- contribute to openstreetmap for places that I want
 '''
 
 
@@ -10,6 +11,8 @@ from geopy.geocoders import Nominatim
 from functools import lru_cache
 import folium
 import re
+from branca.element import Template, MacroElement
+
 
 #######################################
 ## Get data
@@ -26,7 +29,7 @@ color_counter = 0
 #loops through each sheet
 for sheet_name in excel_file.sheet_names:
     #ignores general info and to try list sheets
-    if sheet_name not in ['General Notes', 'To Try']:
+    if sheet_name not in ['General Notes']:
         sheet_data = excel_file.parse(sheet_name)
         #adds the sheet name, which signifies the place type (i.e. restaurant, bar, dessert) to pandas df
         sheet_data['place_type'] = sheet_name
@@ -51,21 +54,20 @@ def clean_address(address):
     if not isinstance(address, str):
         return ""
 
-    # Replace '#' with 'Unit ' to standardize
-    address = address.replace("#", "Unit ")
-
-    # Remove unit/suite/apartment identifiers (numeric or letter suffixes)
+    # Remove unit/suite/apartment identifiers
     address = re.sub(
-        r'\b(?:Unit|Suite|Ste|Apt|Apartment)\s*\w+\b',
+        r'\b(?:Unit|Suite|Ste|Apt|Apartment|Stall)\s*\w+\b|#\s*\w+',
         '',
         address,
         flags=re.IGNORECASE
     )
 
-    # Clean up excess whitespace and dangling commas
-    address = re.sub(r'\s{2,}', ' ', address).strip().rstrip(',')
+    # Collapse multiple spaces and remove trailing spaces
+    address = re.sub(r'\s{2,}', ' ', address).strip()
+    # Remove space before commas
+    address = re.sub(r'\s+,', ',', address)
 
-    # Expand cardinal direction abbreviations
+    # Expand cardinal directions
     direction_map = {
         r'\bN\b': 'North',
         r'\bS\b': 'South',
@@ -76,48 +78,69 @@ def clean_address(address):
         r'\bSE\b': 'Southeast',
         r'\bSW\b': 'Southwest'
     }
-
     for abbr, full in direction_map.items():
+        address = re.sub(abbr, full, address, flags=re.IGNORECASE)
+
+    # Standardize street suffixes
+    suffix_map = {
+        r'\bSt\b': 'Street',
+        r'\bHwy\b': 'Highway',
+        r'\bAve\b': 'Avenue',
+        r'\bRd\b': 'Road',
+        r'\bDr\b': 'Drive',
+        r'\bBlvd\b': 'Boulevard',
+        r'\bLn\b': 'Lane',
+        r'\bCt\b': 'Court',
+        r'\bPl\b': 'Place',
+        r'\bTer\b': 'Terrace',
+        r'\bPkwy\b': 'Parkway',
+        r'\bCir\b': 'Circle',
+        r'\bTrl\b': 'Trail'
+    }
+    for abbr, full in suffix_map.items():
         address = re.sub(abbr, full, address, flags=re.IGNORECASE)
 
     return address
 
 
-# Caching decorator for geocoding
+# # Caching decorator for geocoding
 @lru_cache(maxsize=None)
-def try_geocode(query):
-    try:
-        location = geolocator.geocode(query, country_codes='US')
-        if location:
-            return location.latitude, location.longitude
-    except Exception as e:
-        print(f"Geocode error for '{query}': {e}")
+def try_geocode(query, fallback):
+    if fallback == False:
+        try:
+            location = geolocator.geocode(query, country_codes='US')
+            if location:
+                return location.latitude, location.longitude
+        except Exception as e:
+            return None, None
+    else:
+        try:
+            location = lambda query: geolocator.geocode("%s, Georgia, United States" % query)
+            if location:
+                address = location(query)
+                return address.latitude, address.longitude
+        except Exception as e:
+            return None, None
+
     return None, None
 
-#slightly alternative method for use with name query only
-def name_try_geocode(query):
-    try:
-        location = lambda query: geolocator.geocode("%s, Atlanta GA" % query)
-        if location:
-            return location.latitude, location.longitude
-    except Exception as e:
-        print(f"Geocode error for '{query}': {e}")
-    return None, None
 
 def geocode_with_fallback(row):
     address = clean_address(row.get('Location', ''))
     name = row.get('Name', '')
 
     #trys to geocode based on the address
-    lat, lon = try_geocode(address)
+    name_fallback = False
+    lat, lon = try_geocode(address, name_fallback)
 
     #if address doesn't work, falls back to trying just restaurant name
     if lat is None or lon is None:
+        name_fallback = True
         #uses alternative function
-        lat, lon = name_try_geocode(name)
+        lat, lon = try_geocode(name, name_fallback)
         #if fails again, doesn't geocode
         if lat is None or lon is None:
-            print(f"WARNING: Geocoding failed for both address and name -> '{address}' / '{name}'")
+            print(f"WARING: Geocoding failed for both address and name -> '{address}' / '{name}'")
 
     return lat, lon
 
@@ -130,17 +153,18 @@ def apply_geocoding(df):
 
 # Create map with geocoded city center
 def create_map(city_address='Atlanta, Georgia, USA'):
-    center = try_geocode(city_address)
+    center = try_geocode(city_address, False)
     if center[0] is not None and center[1] is not None:
         return folium.Map(location=center, zoom_start=11, tiles=None)
     else:
         print("Could not geocode city center.")
         return None
 
-# Add markers
+
+# Add markers, DEFAULT ICON CUSTOM COLOR
 def add_markers_to_map(df, food_map):
     # Colors to map (should align with expected color_id values)
-    colors = ['blue', 'green', 'pink', 'red']
+    colors = ['blue', 'green', 'pink', 'red', 'black']
 
     # Group markers by place_type
     for group_name, df_group in df.groupby('place_type'):
@@ -151,8 +175,13 @@ def add_markers_to_map(df, food_map):
             color_index = int(row['color_id']) % len(colors)
             icon_color = colors[color_index]
 
-            #text to go in popup, <strong> is bold, and add parameters to ensure text fits nicer
-            iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><br><r>Rating: {row['Stars (of 10)']} of 10<br><br>{row['Additional Notes']}')
+            if group_name != 'To Try':
+                #text to go in popup, <strong> is bold, and add parameters to ensure text fits nicer
+                iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><br>Rating: {row['Stars (of 10)']} of 10<br><br>{row['Additional Notes']}')
+            else:
+                iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><br>Havent Tried!<br><br>Place Type: {row['Type']}')
+
+            #sets popup width and height parameters
             popup = folium.Popup(iframe, min_width=200, max_width=400)
 
             #adds marker to feature group on map
@@ -164,6 +193,35 @@ def add_markers_to_map(df, food_map):
 
         feature_group.add_to(food_map)
 
+#creates a legend which associates the marker colors with a place type
+def add_color_legend(food_map):
+    legend_html = """
+    {% macro html(this, kwargs) %}
+    <div style="
+        position: fixed;
+        bottom: 50px;
+        left: 50px;
+        z-index: 9999;
+        background-color: white;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+        font-size: 14px;
+    ">
+        <b>Legend</b><br>
+        <i style="background: blue; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> To Try<br>
+        <i style="background: green; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> Restaurants<br>
+        <i style="background: pink; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> Dessert Only<br>
+        <i style="background: red; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> Coffee and Bakery<br>
+        <i style="background: black; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> Bars
+    </div>
+    {% endmacro %}
+    """
+
+    legend = MacroElement()
+    legend._template = Template(legend_html)
+    food_map.get_root().add_child(legend)
 
 # Main pipeline
 def generate_food_map(df):
@@ -175,8 +233,12 @@ def generate_food_map(df):
     folium.TileLayer('cartodb positron', control=False).add_to(food_map)
 
     if food_map:
+        #adds locations on map
         add_markers_to_map(df, food_map)
+        #adds selectable layers
         folium.LayerControl().add_to(food_map)
+        #adds color legend to make it more readable
+        add_color_legend(food_map)
 
         food_map.save('ATL_food_map.html')
         print("Food map saved as ATL_food_map.html.")
@@ -189,14 +251,44 @@ generate_food_map(combined_df)
 
 
 '''
-Old Code
+custom marker code
 '''
-# # Add markers
+# # Add markers, CUSTOM ICON
 # def add_markers_to_map(df, food_map):
-#     for _, row in df.iterrows():
-#         group_name, color = get_group_color(row)
-#         folium.Marker(
-#             location=[row['latitude'], row['longitude']],
-#             popup=row['Name'],
-#             icon=folium.Icon(color=color)
-#         ).add_to(food_map)
+#     custom_icon_dict = {
+#         'Bars':'cocktailclipart.jpg',
+#         'Coffee and Bakery':'coffeepastryclipart.jpg',
+#         'Dessert Only':'icecreamclipart.jpg',
+#         'Restaurants':'fooddrinkclipart.jpg',
+#         'To Try':'questionclipart.jpg'
+#         }
+
+
+#     # Group markers by place_type
+#     for group_name, df_group in df.groupby('place_type'):
+#         feature_group = folium.FeatureGroup(group_name).add_to(food_map)
+
+#         for _, row in df_group.iterrows():
+#             if group_name != 'To Try':
+#                 #text to go in popup, <strong> is bold, and add parameters to ensure text fits nicer
+#                 iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><br>Rating: {row['Stars (of 10)']} of 10<br><br>{row['Additional Notes']}')
+#             else:
+#                 iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><br>Place Type: {row['Type']}')
+
+#             #sets popup width and height parameters
+#             popup = folium.Popup(iframe, min_width=200, max_width=400)
+#             #sets custom icon
+#             icon_path = custom_icon_dict[group_name]
+#             icon = folium.features.CustomIcon(
+#                 icon_image=icon_path,
+#                 icon_size=(50, 50)
+#                 )
+
+#             #adds marker to feature group on map
+#             folium.Marker(
+#                 location=[row['latitude'], row['longitude']],
+#                 popup=popup,
+#                 icon=icon
+#             ).add_to(feature_group)
+
+#         feature_group.add_to(food_map)
