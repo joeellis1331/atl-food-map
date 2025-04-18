@@ -165,6 +165,14 @@ def create_map(city_address='Atlanta, Georgia, USA'):
 def add_markers_to_map(df, food_map):
     # Colors to map (should align with expected color_id values)
     colors = ['blue', 'green', 'pink', 'red', 'black']
+    #icustom cons associated with groups
+    icon_dict = {
+        'To Try':'question',
+        'Restaurants':'bowl-rice',
+        'Dessert Only':'ice-cream',
+        'Coffee and Bakery':'mug-hot',
+        'Bars':'martini-glass'
+    }
 
     # Group markers by place_type
     for group_name, df_group in df.groupby('place_type'):
@@ -184,11 +192,11 @@ def add_markers_to_map(df, food_map):
             #sets popup width and height parameters
             popup = folium.Popup(iframe, min_width=200, max_width=400)
 
-            #adds marker to feature group on map
+            #adds marker to feature group on map, Note: prefix='fa' is required for custom icon to show up, it stands for fontawesome
             folium.Marker(
                 location=[row['latitude'], row['longitude']],
                 popup=popup,
-                icon=folium.Icon(color=icon_color)
+                icon=folium.Icon(color=icon_color, icon=icon_dict[group_name], prefix='fa')
             ).add_to(feature_group)
 
         feature_group.add_to(food_map)
@@ -250,45 +258,4 @@ generate_food_map(combined_df)
 
 
 
-'''
-custom marker code
-'''
-# # Add markers, CUSTOM ICON
-# def add_markers_to_map(df, food_map):
-#     custom_icon_dict = {
-#         'Bars':'cocktailclipart.jpg',
-#         'Coffee and Bakery':'coffeepastryclipart.jpg',
-#         'Dessert Only':'icecreamclipart.jpg',
-#         'Restaurants':'fooddrinkclipart.jpg',
-#         'To Try':'questionclipart.jpg'
-#         }
-
-
-#     # Group markers by place_type
-#     for group_name, df_group in df.groupby('place_type'):
-#         feature_group = folium.FeatureGroup(group_name).add_to(food_map)
-
-#         for _, row in df_group.iterrows():
-#             if group_name != 'To Try':
-#                 #text to go in popup, <strong> is bold, and add parameters to ensure text fits nicer
-#                 iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><br>Rating: {row['Stars (of 10)']} of 10<br><br>{row['Additional Notes']}')
-#             else:
-#                 iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><br>Place Type: {row['Type']}')
-
-#             #sets popup width and height parameters
-#             popup = folium.Popup(iframe, min_width=200, max_width=400)
-#             #sets custom icon
-#             icon_path = custom_icon_dict[group_name]
-#             icon = folium.features.CustomIcon(
-#                 icon_image=icon_path,
-#                 icon_size=(50, 50)
-#                 )
-
-#             #adds marker to feature group on map
-#             folium.Marker(
-#                 location=[row['latitude'], row['longitude']],
-#                 popup=popup,
-#                 icon=icon
-#             ).add_to(feature_group)
-
-#         feature_group.add_to(food_map)
+#################################################################
