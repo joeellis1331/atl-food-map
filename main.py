@@ -248,7 +248,7 @@ def generate_food_map(df):
         #adds color legend to make it more readable
         add_color_legend(food_map)
 
-        food_map.save('./site-build/ATL_food_map.html')
+        food_map.save('ATL_food_map.html')
         print("Food map saved as ATL_food_map.html.")
     else:
         print("Failed to create food map.")
