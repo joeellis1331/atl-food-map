@@ -231,6 +231,38 @@ def add_color_legend(food_map):
     legend._template = Template(legend_html)
     food_map.get_root().add_child(legend)
 
+#specifies that the version showing is not complete, thats all
+def draft_text(food_map):
+    # HTML template for top-center watermark
+    html = """
+    {% macro html(this, kwargs) %}
+    <style>
+        #draft-watermark {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 0, 0, 0.6);
+            color: white;
+            padding: 5px 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+    </style>
+    <div id='draft-watermark'>DRAFT VERSION</div>
+    {% endmacro %}
+    """
+
+    # Add the macro to the map
+    watermark = MacroElement()
+    watermark._template = Template(html)
+    food_map.get_root().add_child(watermark)
+
+
+
 # Main pipeline
 def generate_food_map(df):
     #df = apply_geocoding(df)
@@ -247,9 +279,11 @@ def generate_food_map(df):
         folium.LayerControl().add_to(food_map)
         #adds color legend to make it more readable
         add_color_legend(food_map)
+        #adds text stating the map is a draft
+        draft_text(food_map)
 
         food_map.save('index.html')
-        print("Food map saved as ATL_food_map.html.")
+        print("Food map saved as index.html.")
     else:
         print("Failed to create food map.")
 
