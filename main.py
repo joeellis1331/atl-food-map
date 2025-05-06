@@ -155,7 +155,7 @@ def apply_geocoding(df):
 def create_map(city_address='Atlanta, Georgia, USA'):
     center = try_geocode(city_address, False)
     if center[0] is not None and center[1] is not None:
-        return folium.Map(location=center, zoom_start=11, tiles=None)
+        return folium.Map(location=center, zoom_start=10, tiles=None)
     else:
         print("Could not geocode city center.")
         return None
