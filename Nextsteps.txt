@@ -1,0 +1,9 @@
+Create a choropleth map using zipcodes to find the highest rated zips codes
+
+see this tutorial: https://www.roelpeters.be/plot-choropleth-map-geopandas-folium/
+and this post: https://stackoverflow.com/questions/72033166/how-do-i-make-a-chloropleth-map-zip-code-to-column-in-folium
+
+Atlanta, since I have the neighborhood map, and anything that isn't atlanta can be one (i.e. Decatur, Doraville, etc)
+
+Atlanta map from here:
+https://dpcd-coaplangis.opendata.arcgis.com/datasets/official-neighborhood-statistical-areas-nsa/explore
