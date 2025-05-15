@@ -8,7 +8,8 @@ and this post: https://stackoverflow.com/questions/72033166/how-do-i-make-a-chlo
 finding restaurant location within neighborhoods
 https://gis.stackexchange.com/questions/437956/best-way-to-check-if-a-point-is-in-a-region
 
-Atlanta, since I have the neighborhood map, and anything that isn't atlanta can be one (i.e. Decatur, Doraville, etc). Probably need to get the outline for those places and convert to geopandas
+Find other maps from Koordinates.com by zip code for dekalb and gwinnett counties:
+https://koordinates.com/data/?q=gwinnett+county+ga+boundary
 
 Atlanta map from here:
 https://dpcd-coaplangis.opendata.arcgis.com/datasets/official-neighborhood-statistical-areas-nsa/explore
