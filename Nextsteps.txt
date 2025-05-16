@@ -1,9 +1,18 @@
-Create a choropleth map using zipcodes to find the highest rated zips codes
+utils_choropleth.py
+1. Maybe use QGIS to edit the polygons to make them more neat?
+2. Figure out how to handle areas without ratings
+3. adjust fonts and colors
 
-utils_choropleth.py ...
 
-see this tutorial: https://www.roelpeters.be/plot-choropleth-map-geopandas-folium/
-and this post: https://stackoverflow.com/questions/72033166/how-do-i-make-a-chloropleth-map-zip-code-to-column-in-folium
+
+final goals:
+-clean choropleth code
+-incorportate into current static HTML of map
+
+
+
+#######################3
+see this tutorial: https://vverde.github.io/blob/interactivechoropleth.html
 
 finding restaurant location within neighborhoods
 https://gis.stackexchange.com/questions/437956/best-way-to-check-if-a-point-is-in-a-region
