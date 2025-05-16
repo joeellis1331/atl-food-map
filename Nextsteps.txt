@@ -1,7 +1,9 @@
 utils_choropleth.py
-1. Maybe use QGIS to edit the polygons to make them more neat?
-2. Figure out how to handle areas without ratings
-3. adjust fonts and colors
+1. ***Official neighborhoods with demographic Data json has neighborhood names for Atlanta!!
+    1a. incorporate names and scores into popups for choropleth
+2. Maybe use QGIS to edit the polygons to make them more neat?
+3. Figure out how to handle areas without ratings
+4. adjust fonts and colors
 
 
 
