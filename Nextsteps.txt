@@ -1,9 +1,7 @@
 utils_choropleth.py
-1. ***Official neighborhoods with demographic Data json has neighborhood names for Atlanta!!
-    1a. incorporate names and scores into popups for choropleth
-2. Maybe use QGIS to edit the polygons to make them more neat?
-3. Figure out how to handle areas without ratings
-4. adjust fonts and colors
+- Add pop-outs with name/zip and actual rating (can add a plot within popout, maybe swarm?)
+- Figure out how to handle where there is only one rating in an area (will misrepresent for sure)
+- adjust fonts and colors
 
 
 
@@ -16,11 +14,9 @@ final goals:
 #######################3
 see this tutorial: https://vverde.github.io/blob/interactivechoropleth.html
 
-finding restaurant location within neighborhoods
-https://gis.stackexchange.com/questions/437956/best-way-to-check-if-a-point-is-in-a-region
 
 Find other maps from Koordinates.com by zip code for dekalb and gwinnett counties:
 https://koordinates.com/data/?q=gwinnett+county+ga+boundary
 
 Atlanta map from here:
-https://dpcd-coaplangis.opendata.arcgis.com/datasets/official-neighborhood-statistical-areas-nsa/explore
+https://dpcd-coaplangis.opendata.arcgis.com/datasets/7e91b75124fc47cbab7ffdb5de1cdd0a_0/explore?location=33.848672%2C-84.234272%2C10.93
