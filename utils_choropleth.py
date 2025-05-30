@@ -161,21 +161,21 @@ legend_html = f"""
 <div style="
     position: fixed;
     bottom: 20px;
-    right: 10px;
-    width: 240px;
+    left: 10px;
+    width: 150px;
     z-index: 1000;
     font-size: 14px;
     background-color: white;
-    padding: 12px;
+    padding: 10px;
     border: 2px solid gray;
     border-radius: 8px;
     box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
 ">
-    <div style="margin-bottom: 20px;">
+    <div style="margin-bottom: 15px;">
         <b>Average Rating</b>
         <div style="
             width: 100%;
-            height: 15px;
+            height: 10px;
             background: linear-gradient(to right, #fff5f0, #fcbba1, #fc9272, #fb6a4a, #de2d26);
             margin-top: 5px;
             border: 1px solid #ccc;
@@ -189,7 +189,7 @@ legend_html = f"""
         <b>Total Reviews</b>
         <div style="
             width: 100%;
-            height: 15px;
+            height: 10px;
             background: linear-gradient(to right, #e5f5e0, #a1d99b, #31a354);
             margin-top: 5px;
             border: 1px solid #ccc;
@@ -222,7 +222,7 @@ path.leaflet-interactive:focus {
 """))
 
 #saves map
-m.save('test_geomap.html')
+m.save('areas.html')
 
 
 

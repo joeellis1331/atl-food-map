@@ -10,7 +10,7 @@ import utils_map_elements
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'gsheet_path',
+        '--gsheet_path',
         help='filepath to the downloaded .xlsx of the running google sheet with this information on my drive'
         )
     parser.add_argument(
@@ -64,8 +64,8 @@ def main():
     utils_map_elements.draft_text(food_map)
 
     #save map to use with GitHub Pages
-    food_map.save('index.html')
-    print("Food map successfully created, saved as index.html.")
+    food_map.save('individuals.html')
+    print("Food map successfully created, saved as individuals.html")
 
 
 

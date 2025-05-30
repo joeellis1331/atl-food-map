@@ -55,8 +55,8 @@ def add_color_legend(food_map):
     {% macro html(this, kwargs) %}
     <div style="
         position: fixed;
-        bottom: 50px;
-        left: 50px;
+        bottom: 10px;
+        left: 10px;
         z-index: 9999;
         background-color: white;
         border: 2px solid #ccc;
