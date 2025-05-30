@@ -6,7 +6,7 @@ import numpy
 import geopandas
 import folium
 from folium import FeatureGroup
-from branca.element import Template, MacroElement
+from branca.element import Template, MacroElement, Element
 import matplotlib.pyplot as plt
 from itertools import combinations
 
@@ -90,9 +90,12 @@ m = folium.Map(location=[33.7501, -84.3885], zoom_start=10, tiles=None)
 #above line tile=None and below line remove "cartodb positron" from layer control legend
 folium.TileLayer('cartodb positron', control=False).add_to(m)
 
+#layer control feature groups
+fg1 = folium.FeatureGroup(name='Average Rating',overlay=False).add_to(m)
+fg2 = folium.FeatureGroup(name='Total Reviews',overlay=False).add_to(m)
 
-#choropleth of the average restaurant score
-cp = folium.Choropleth(
+##### choropleth of the average restaurant score #####
+cp_avg = folium.Choropleth(
     geo_data=df_geo,
     name='Average Rating',
     data=df_geo,
@@ -105,34 +108,125 @@ cp = folium.Choropleth(
     nan_fill_color='gray',
     nan_fill_opacity=0.2,
     legend_name='Rating (Out of 5.0)'
-    ).add_to(m)
-
+    ).geojson.add_to(fg1)
 #adding a tooltip/hover displaying information when hovering over
 #fields and aliases are in order, same length for each
 folium.GeoJsonTooltip(
     fields=['NAME', 'map', 'ZIPCODE', 'total_ratings', 'avg_score'],
     aliases=['Neighborhood', 'County', 'Zipcode', 'Total Places Reviewed', 'Average Rating']
-    ).add_to(cp.geojson)
+    ).add_to(cp_avg)
+popup = folium.GeoJsonPopup(
+    fields=["name", "change"],
+    aliases=["State", "% Change"],
+    localize=True,
+    labels=True,
+    style="background-color: yellow;",
+)
 
-folium.LayerControl().add_to(m)
+
+##### choropleth of the restaurants reviewed in each region #####
+cp_total = folium.Choropleth(
+    geo_data=df_geo,
+    name='Total Reviews',
+    data=df_geo,
+    columns=['ID', 'total_ratings'],
+    key_on='feature.properties.ID',
+    fill_color='Greens',
+    fill_opacity=0.5,
+    line_opacity=0.2,
+    nan_fill_color='gray',
+    nan_fill_opacity=0.2,
+    legend_name='Rating (Out of 5.0)'
+    ).geojson.add_to(fg2)
+#adding a tooltip/hover displaying information when hovering over
+#fields and aliases are in order, same length for each
+folium.GeoJsonTooltip(
+    fields=['NAME', 'map', 'ZIPCODE', 'total_ratings', 'avg_score'],
+    aliases=['Neighborhood', 'County', 'Zipcode', 'Total Places Reviewed', 'Average Rating']
+    ).add_to(cp_total)
+
+
+##### adding legend elements #####
+#rating_min = round(df_geo['avg_score'].min(), 1)
+#rating_max = round(df_geo['avg_score'].max(), 1)
+rating_min = 0.0
+rating_max = 5.0
+
+reviews_min = int(df_geo['total_ratings'].min())
+reviews_max = int(df_geo['total_ratings'].max())
+
+
+legend_html = f"""
+{{% macro html(this, kwargs) %}}
+<div style="
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    width: 240px;
+    z-index: 1000;
+    font-size: 14px;
+    background-color: white;
+    padding: 12px;
+    border: 2px solid gray;
+    border-radius: 8px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+">
+    <div style="margin-bottom: 20px;">
+        <b>Average Rating</b>
+        <div style="
+            width: 100%;
+            height: 15px;
+            background: linear-gradient(to right, #fff5f0, #fcbba1, #fc9272, #fb6a4a, #de2d26);
+            margin-top: 5px;
+            border: 1px solid #ccc;
+        "></div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px;">
+            <span>{rating_min}</span><span>{rating_max}</span>
+        </div>
+    </div>
+
+    <div>
+        <b>Total Reviews</b>
+        <div style="
+            width: 100%;
+            height: 15px;
+            background: linear-gradient(to right, #e5f5e0, #a1d99b, #31a354);
+            margin-top: 5px;
+            border: 1px solid #ccc;
+        "></div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px;">
+            <span>{reviews_min}</span><span>{reviews_max}</span>
+        </div>
+    </div>
+</div>
+{{% endmacro %}}
+"""
+
+
+#add html legend to map
+macro = MacroElement()
+macro._template = Template(legend_html)
+m.get_root().add_child(macro)
+#adds layer control to toggle between total reviews and avg score
+folium.LayerControl(collapsed=False).add_to(m)
+
+
+# MUST BE PLACED JUST BEFORE SAVE
+#removes black box when clicking, I.E. focus outline
+m.get_root().header.add_child(Element("""
+<style>
+path.leaflet-interactive:focus {
+    outline: none;
+}
+</style>
+"""))
+
+#saves map
 m.save('test_geomap.html')
 
 
 
-# #choropleth of the restaurants reviewed in each region
-# cp = folium.Choropleth(
-#     geo_data=df_geo,
-#     name='Total Reviews',
-#     data=df_geo,
-#     columns=['ID', 'total_ratings'],
-#     key_on='feature.properties.ID',
-#     fill_color='Greens',
-#     fill_opacity=0.5,
-#     line_opacity=0.2,
-#     nan_fill_color='gray',
-#     nan_fill_opacity=0.2,
-#     legend_name='Rating (Out of 5.0)'
-#     ).add_to(m)
+
 
 
 
