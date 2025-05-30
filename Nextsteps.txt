@@ -1,5 +1,5 @@
 utils_choropleth.py
-- Add pop-outs with name/zip and actual rating (can add a plot within popout, maybe swarm?)
+- maybe have two layers, one showing the score avg and the other showing the total reviews in each area?
 - Figure out how to handle where there is only one rating in an area (will misrepresent for sure)
 - adjust fonts and colors
 

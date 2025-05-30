@@ -50,7 +50,7 @@ def main():
     if cc_coordnates[0] is not None and cc_coordnates[1] is not None:
         #creates intial folium map
         food_map = folium.Map(location=cc_coordnates, zoom_start=10, tiles=None)
-        #setting the initial tile to None and declaring here removes the header from the layer control title
+        #setting the initial tile to None in the above live and declaring it in the below line here removes the header from the layer control title
         folium.TileLayer('cartodb positron', control=False).add_to(food_map)
     else:
         raise Exception(f'Error: Could not geocode {city_center}, food map not created')
