@@ -12,16 +12,16 @@ from itertools import combinations
 
 
 #read in coordinate polygons for atlanta neighborhoods
-df_atl = geopandas.read_file('atlanta_neighborhoods_epsg3857_final.geojson')
+df_atl = geopandas.read_file('../geographic_files/atlanta_neighborhoods_epsg3857_final.geojson')
 df_atl['map'] = 'Atlanta'
 df_atl['ZIPCODE'] = None
 
 #Read other counties coord polygons
-df_dekalb = geopandas.read_file('dekalb_minus_atl_epsg3857_final.geojson')
+df_dekalb = geopandas.read_file('../geographic_files/dekalb_minus_atl_epsg3857_final.geojson')
 df_dekalb['map'] = 'Dekalb'
 df_dekalb = df_dekalb.rename(columns={'PO_NAME':'NAME', 'ZIP':'ZIPCODE'})
 
-df_gwin = geopandas.read_file('gwinnett_epsg3857_final.geojson')
+df_gwin = geopandas.read_file('../geographic_files/gwinnett_epsg3857_final.geojson')
 df_gwin['map'] = ' Gwinnett'
 df_gwin = df_gwin.rename(columns={'POST_OFFIC':'NAME'})
 
@@ -222,7 +222,7 @@ path.leaflet-interactive:focus {
 """))
 
 #saves map
-m.save('areas.html')
+m.save('../docs/areas.html')
 
 
 
