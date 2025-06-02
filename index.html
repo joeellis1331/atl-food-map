@@ -1,81 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    .iframe-container {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto 40px;
-    }
-
-    .center-text {
-      text-align: center;
-      padding: 0 10px;
-    }
-
-    .iframe-header {
-      margin: 0 0 10px;
-      font-size: 20px;
-      text-align: center;
-    }
-
-    .iframe-header a {
-      text-decoration: none;
-      color: #000;
-    }
-
-    .iframe-header a:hover {
-      text-decoration: underline;
-      color: #0077cc;
-    }
-
-    .responsive-iframe-wrapper {
-      position: relative;
-      width: 100%;
-      padding-top: 100%; /* 1:1 Aspect Ratio (square) */
-    }
-
-    .responsive-iframe-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 1px solid #ccc;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exploring Atlanta's Culinary Scene</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<div class="center-text">
-  <h2>Atlanta Food and Drink Review</h2>
-  <p>Below is a collective overview food and drink establishments within the Atlanta metro area.
-    The top map displays all establishments geographically and gives them rating on an individual basis.
-    This also includes establishments that will (hopefully) be reviewed. The bottom map shows which neighborhoods
-    have the highest average rated establishments.
-  </p>
-  <p>
-    You can click on the map titles to open them in a new page!
-  </p>
-</div>
-
-<div class="iframe-container">
-  <h3 class="iframe-header"><a href="individuals.html" target="_blank">Place-by-Place</a></h3>
-  <div class="responsive-iframe-wrapper">
-    <iframe src="individuals.html" title="Reviews"></iframe>
+  <div class="backdrop">
+    <div class="content">
+      <h1>Exploring Atlanta's Culinary Scene</h1>
+      <h2>Check out our reviews of Atlanta's culinary scene, from ethnic dinners, rooftop bars, and delectable sweets. All the way to boutique coffee shops and bakeries.</h2>
+      <div class="button-container">
+        <a href="individuals.html" class="btn">
+          <img src="img/location_icon.jpg" alt="icon"/> All Locations
+        </a>
+        <a href="areas.html" class="btn">
+          <img src="img/neighborhood_icon.jpg" alt="icon"/> Best Neighborhoods
+        </a>
+      </div>
+    </div>
   </div>
-</div>
-
-<div class="iframe-container">
-  <h3 class="iframe-header"><a href="areas.html" target="_blank">Best Neighborhoods</a></h3>
-  <div class="responsive-iframe-wrapper">
-    <iframe src="areas.html" title="Hoods"></iframe>
-  </div>
-</div>
-
 </body>
 </html>

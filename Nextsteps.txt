@@ -1,13 +1,11 @@
 utils_choropleth.py
 - Figure out how to handle where there is only one rating in an area (will misrepresent for sure)
-- adjust fonts and colors
 
-
-
-final goals:
--clean choropleth code
--incorportate into current static HTML of map
-
+utils_map_elements.py
+- add a new filter group to go by star rating
+- add a search function to zoom in on an address
+    - mile search radius within that address?
+    - maybe even a route finding function?
 
 
 #######################3

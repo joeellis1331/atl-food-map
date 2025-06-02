@@ -1,0 +1,73 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.backdrop {
+  background: url('../img/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+.content {
+  padding: 40px;
+  max-width: 700px;
+  width: 90%;
+}
+
+h1, h2 {
+  font-family: 'Indie Flower', cursive;
+}
+
+h1 {
+  font-size: 3.0em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  font-size: 1.25em;
+  margin-bottom: 30px;
+  max-width: 85%;        /* 👈 makes it narrower */
+  margin-left: auto;
+  margin-right: auto;    /* 👈 centers it */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5)
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  background-color: #ffffff;
+  color: #000000;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s, transform 0.3s;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.btn:hover {
+  background-color: #ddd;
+  transform: scale(1.05);
+}
+
+.btn img {
+  width: 24px;
+  height: 24px;
+}

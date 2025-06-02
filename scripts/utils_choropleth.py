@@ -12,16 +12,16 @@ from itertools import combinations
 
 
 #read in coordinate polygons for atlanta neighborhoods
-df_atl = geopandas.read_file('../geographic_files/atlanta_neighborhoods_epsg3857_final.geojson')
+df_atl = geopandas.read_file('./geographic_files/atlanta_neighborhoods_epsg3857_final.geojson')
 df_atl['map'] = 'Atlanta'
 df_atl['ZIPCODE'] = None
 
 #Read other counties coord polygons
-df_dekalb = geopandas.read_file('../geographic_files/dekalb_minus_atl_epsg3857_final.geojson')
+df_dekalb = geopandas.read_file('./geographic_files/dekalb_minus_atl_epsg3857_final.geojson')
 df_dekalb['map'] = 'Dekalb'
 df_dekalb = df_dekalb.rename(columns={'PO_NAME':'NAME', 'ZIP':'ZIPCODE'})
 
-df_gwin = geopandas.read_file('../geographic_files/gwinnett_epsg3857_final.geojson')
+df_gwin = geopandas.read_file('./geographic_files/gwinnett_epsg3857_final.geojson')
 df_gwin['map'] = ' Gwinnett'
 df_gwin = df_gwin.rename(columns={'POST_OFFIC':'NAME'})
 
@@ -91,8 +91,8 @@ m = folium.Map(location=[33.7501, -84.3885], zoom_start=10, tiles=None)
 folium.TileLayer('cartodb positron', control=False).add_to(m)
 
 #layer control feature groups
-fg1 = folium.FeatureGroup(name='Average Rating',overlay=False).add_to(m)
-fg2 = folium.FeatureGroup(name='Total Reviews',overlay=False).add_to(m)
+fg1 = folium.FeatureGroup(name='Average Rating', overlay=False).add_to(m)
+fg2 = folium.FeatureGroup(name='Total Reviews', overlay=False).add_to(m)
 
 ##### choropleth of the average restaurant score #####
 cp_avg = folium.Choropleth(
@@ -222,7 +222,7 @@ path.leaflet-interactive:focus {
 """))
 
 #saves map
-m.save('../docs/areas.html')
+m.save('areas.html')
 
 
 

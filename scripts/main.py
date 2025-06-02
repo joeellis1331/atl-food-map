@@ -64,7 +64,7 @@ def main():
     utils_map_elements.draft_text(food_map)
 
     #save map to use with GitHub Pages
-    food_map.save('../docs/individuals.html')
+    food_map.save('individuals.html')
     print("Food map successfully created, saved as individuals.html")
 
 

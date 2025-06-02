@@ -46,7 +46,7 @@ def add_markers_to_map(df, food_map):
 
     #adds groups to be able to be selectable layers
     #MUST COME AFTER MARKERS ARE ADDED
-    folium.LayerControl().add_to(food_map)
+    folium.LayerControl(collapsed=False).add_to(food_map)
 
 
 #creates a legend which associates the marker colors with a place type
