@@ -1,3 +1,8 @@
+index
+- clicking inspect shifts the background to a more appropriate position, right now the top part is cut off.
+    This could be useful with buttons at the top like for the spreadsheet page but looks less cool
+    on the main page since it cuts some image
+
 utils_choropleth.py
 - Figure out how to handle where there is only one rating in an area (will misrepresent for sure)
 
@@ -7,11 +12,13 @@ utils_map_elements.py
     - mile search radius within that address?
     - maybe even a route finding function?
 
+Main.py
+- Is there a way to not have to re-run the geocoding every time?
+- capture errors into a log file
+
+
 
 #######################3
-see this tutorial: https://vverde.github.io/blob/interactivechoropleth.html
-
-
 Find other maps from Koordinates.com by zip code for dekalb and gwinnett counties:
 https://koordinates.com/data/?q=gwinnett+county+ga+boundary
 

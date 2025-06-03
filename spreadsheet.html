@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Themed Anchor Content Switcher</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /*overwrite the default and moves buttoms to top of screen*/
+      .button-container {
+        position: absolute;
+        top: 5%;
+      }
+      .content-box {
+        padding: 10px 10px;
+        text-align: center;
+      }
+      object {
+        height: 350px;
+        width: 750px;
+        background-color: white;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="backdrop">
+      <nav class="button-container">
+        <a href="#" data-content="content1" class="btn active">
+          <img src="img/question-solid.jpg" alt="icon" /> To Try
+        </a>
+        <a href="#" data-content="content2" class="btn">
+          <img src="img/bowl-rice-solid.jpg" alt="icon" /> Restaurants
+        </a>
+        <a href="#" data-content="content3" class="btn">
+          <img src="img/ice-cream-solid.jpg" alt="icon" /> Desserts
+        </a>
+        <a href="#" data-content="content4" class="btn">
+          <img src="img/mug-hot-solid.jpg" alt="icon" /> Coffee/Baked Goods
+        </a>
+        <a href="#" data-content="content5" class="btn">
+          <img src="img/martini-glass-solid.jpg" alt="icon" /> Bars
+        </a>
+      </nav>
+      <div class="content">
+        <div class="content-box" id="content1">
+          <h1>To try</h1>
+          <object type="text/html" data="sheet_to_try.html"></object>
+        </div>
+        <div class="content-box" id="content2" style="display:none;">
+          <h1>Restaurants</h1>
+          <object type="text/html" data="sheet_restaurants.html"></object>
+        </div>
+        <div class="content-box" id="content3" style="display:none;">
+          <h1>Sweet Treats</h1>
+          <object type="text/html" data="sheet_dessert_only.html"></object>
+        </div>
+        <div class="content-box" id="content4" style="display:none;">
+          <h1>Coffee/Bakery</h1>
+          <object type="text/html" data="sheet_coffee_and_bakery.html"></object>
+        </div>
+        <div class="content-box" id="content5" style="display:none;">
+          <h1>Bars</h1>
+          <object type="text/html" data="sheet_bars.html"></object>
+        </div>
+      </div>
+    </div>
+    <script>
+    // Tab switching logic
+    document.querySelectorAll('.button-container a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Remove active from all
+        document.querySelectorAll('.button-container a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+        // Hide all content boxes
+        document.querySelectorAll('.content-box').forEach(box => box.style.display = 'none');
+        // Show selected
+        const id = this.getAttribute('data-content');
+        document.getElementById(id).style.display = 'block';
+      });
+    });
+    </script>
+  </body>
+</html>

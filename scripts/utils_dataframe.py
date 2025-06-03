@@ -1,10 +1,9 @@
 import pandas
 
 '''
-this script/function takes the main google sheet and combined all the separated sheets into one big dataframe.
+this function takes the main google sheet and combined all the separated sheets into one big dataframe.
 It adds columns to delineate between restaurants, to try places, etc.
 '''
-
 def reformat_sheet(file_path):
     excel_file = pandas.ExcelFile(file_path)
 
@@ -28,3 +27,16 @@ def reformat_sheet(file_path):
     #creates one big dataframe
     combined_df = pandas.concat(all_data.values(), ignore_index=True)
     return combined_df
+
+'''
+this function returns each sheet as a html, to use to display in webpage
+'''
+def sheet_to_html(file_path):
+    excel_file = pandas.ExcelFile(file_path)
+    #loops through each sheet
+    for sheet_name in excel_file.sheet_names:
+        #ignores general info and to try list sheets
+        if sheet_name not in ['General Notes']:
+            sheet_data = excel_file.parse(sheet_name)
+            sheet_name = sheet_name.replace(' ', '_').lower()
+            sheet_data.to_html(f'sheet_{sheet_name}.html')

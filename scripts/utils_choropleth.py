@@ -34,26 +34,7 @@ df_geo = df_geo.to_crs(crs=4326)
 
 
 '''
-DOWNLOADED QGIS AND MANUALLY CURATED THE SETS TO ENSURE THERE IS NO OVERLAP IN POLYGONS, ETC ETC
-'''
-
-
-
-# #create folium map with atl center
-# m = folium.Map(location=[33.7501, -84.3885], zoom_start=10, tiles="CartoDB positron")
-# for _, r in df_geo.iterrows():
-#     # Without simplifying the representation of each borough,
-#     # the map might not be displayed
-#     sim_geo = geopandas.GeoSeries(r["geometry"]).simplify(tolerance=0.001)
-#     geo_j = sim_geo.to_json()
-#     geo_j = folium.GeoJson(data=geo_j, style_function=lambda x: {"fillColor": "orange"})
-#     geo_j.add_to(m)
-# m.save('test_geomap.html')
-
-
-
-'''
-Match scores into counties
+Match scores into areas
 '''
 #read in food map with coordiantes and ratings
 df_food = pandas.read_pickle('df_food_geocode.pkl')

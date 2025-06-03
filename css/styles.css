@@ -62,9 +62,9 @@ h2 {
   font-family: 'Segoe UI', sans-serif;
 }
 
-.btn:hover {
+.btn:hover{
   background-color: #ddd;
-  transform: scale(1.05);
+  transform: scale(1.15);
 }
 
 .btn img {

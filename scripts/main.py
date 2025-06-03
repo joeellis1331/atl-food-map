@@ -4,13 +4,14 @@ import pandas
 import folium
 import utils_dataframe
 import utils_geocoding
-import utils_map_elements
+import utils_map_individual
+import utils_html_elements
 
 #define arguments
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--gsheet_path',
+        'gsheet_path',
         help='filepath to the downloaded .xlsx of the running google sheet with this information on my drive'
         )
     parser.add_argument(
@@ -24,6 +25,10 @@ def parse_args():
 def main():
     #load args
     args = parse_args()
+
+    #converts xlsx to htmls to use in displayed webpage
+    utils_dataframe.sheet_to_html(args.gsheet_path)
+    quit()
 
     #runs if there is an update to the ATL food list sheet
     if args.geocode:
@@ -57,16 +62,19 @@ def main():
 
 
     #adds locations on map
-    utils_map_elements.add_markers_to_map(df, food_map)
-    #adds color legend to make it more readable
-    utils_map_elements.add_color_legend(food_map)
-    #adds text stating the map is a draft
-    utils_map_elements.draft_text(food_map)
+    utils_map_individual.add_markers_to_map(df, food_map)
+    #list of html elements to add
+    html_list = [utils_html_elements.places_legend, utils_html_elements.watermark]
+    #loop and add
+    for html in html_list:
+        utils_html_elements.add_html_element(food_map, html)
+
 
     #save map to use with GitHub Pages
     food_map.save('individuals.html')
     print("Food map successfully created, saved as individuals.html")
-
+    #saves final pickle file
+    df.to_pickle('df_food_geocode.pkl')
 
 
 if __name__ == '__main__':
