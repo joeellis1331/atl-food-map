@@ -43,6 +43,8 @@ h2 {
 
 .button-container {
   display: flex;
+  position: fixed;
+  top: 5%;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
