@@ -1,8 +1,3 @@
-index
-- clicking inspect shifts the background to a more appropriate position, right now the top part is cut off.
-    This could be useful with buttons at the top like for the spreadsheet page but looks less cool
-    on the main page since it cuts some image
-
 utils_choropleth.py
 - Figure out how to handle where there is only one rating in an area (will misrepresent for sure)
 

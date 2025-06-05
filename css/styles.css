@@ -1,12 +1,13 @@
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .backdrop {
-  background: url('../img/background.jpg') no-repeat center center fixed;
+  background: url("../img/background.jpg") no-repeat center center fixed;
   background-size: cover;
   height: 100vh;
   display: flex;
@@ -17,17 +18,19 @@ body, html {
 }
 
 .content {
-  padding: 40px;
+  padding: 10px;
   max-width: 700px;
   width: 90%;
+  height: 400px;
 }
 
-h1, h2 {
-  font-family: 'Indie Flower', cursive;
+h1,
+h2 {
+  font-family: "Indie Flower", cursive;
 }
 
 h1 {
-  font-size: 3.0em;
+  font-size: 3em;
   margin-bottom: 10px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -35,10 +38,10 @@ h1 {
 h2 {
   font-size: 1.25em;
   margin-bottom: 30px;
-  max-width: 85%;        /* 👈 makes it narrower */
+  max-width: 85%; /* 👈 makes it narrower */
   margin-left: auto;
-  margin-right: auto;    /* 👈 centers it */
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5)
+  margin-right: auto; /* 👈 centers it */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .button-container {
@@ -61,10 +64,13 @@ h2 {
   align-items: center;
   gap: 10px;
   transition: background-color 0.3s, transform 0.3s;
-  font-family: 'Segoe UI', sans-serif;
+  /* font-family: "Segoe UI", sans-serif; */
+  font-family: "Indie Flower", cursive;
+  font-weight: 550;
+  font-size: 1.1em;
 }
 
-.btn:hover{
+.btn:hover {
   background-color: #ddd;
   transform: scale(1.15);
 }
@@ -72,4 +78,8 @@ h2 {
 .btn img {
   width: 24px;
   height: 24px;
+}
+
+.active {
+  background-color: aquamarine;
 }

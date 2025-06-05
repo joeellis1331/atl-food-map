@@ -14,8 +14,8 @@
         display: flex;
         justify-content: center;
         position: relative;
-        top: 10px;
-        gap: 15px;
+        top: 25px;
+        gap: 0px 25px;
         flex-wrap: wrap;
       }
       .tbl-btn {
@@ -35,11 +35,12 @@
         width: 20px;
         height: 20px;
       }
-      .content {
-        padding: 10px;
+      .tbl-btn.active {
+        color: aquamarine;
+        transform: scale(1.15);
       }
       .content-box {
-        text-align: center;
+        overflow: scroll;
       }
       object {
         height: 350px;
@@ -54,13 +55,13 @@
         <a href="index.html" class="btn">
           <img src="img/homepage-icon.jpg" alt="icon" /> Home Page
         </a>
-        <a href="individuals.html" class="btn">
+        <a href="individuals_wrapper.html" class="btn">
           <img src="img/location_icon.jpg" alt="icon" /> All Locations
         </a>
-        <a href="areas.html" class="btn">
+        <a href="areas_wrapper.html" class="btn">
           <img src="img/neighborhood_icon.jpg" alt="icon" /> Best Neighborhoods
         </a>
-        <a href="spreadsheet.html" class="btn">
+        <a href="spreadsheet_wrapper.html" class="btn active">
           <img src="img/spreadsheet_icon.jpg" alt="icon" /> Spreadsheet
         </a>
       </nav>
