@@ -4,11 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Themed Anchor Content Switcher</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="../css/styles.css" />
     <style>
       .table-headings-container {
         display: flex;
@@ -41,7 +37,7 @@
   <body>
     <div class="backdrop">
       <nav class="button-container">
-        <a href="index.html" class="btn"> Home Page </a>
+        <a href="../index.html" class="btn"> Home Page </a>
         <a href="individuals_wrapper.html" class="btn"> All Locations </a>
         <a href="areas_wrapper.html" class="btn"> Best Neighborhoods </a>
         <a href="spreadsheet_wrapper.html" class="btn active"> Spreadsheet </a>
@@ -50,26 +46,40 @@
         <a href="#" data-content="content1" class="tbl-btn active"> To Try </a>
         <a href="#" data-content="content2" class="tbl-btn"> Restaurants </a>
         <a href="#" data-content="content3" class="tbl-btn"> Desserts </a>
-        <a href="#" data-content="content4" class="tbl-btn"> Coffee/Baked Goods </a>
+        <a href="#" data-content="content4" class="tbl-btn">
+          Coffee/Baked Goods
+        </a>
         <a href="#" data-content="content5" class="tbl-btn"> Bars </a>
         <div class="content">
           <div class="content-box" id="content1">
-            <object type="text/html" data="sheet_to_try.html"></object>
+            <object
+              type="text/html"
+              data="../sub_pages/spreadsheet_html/sheet_to_try.html"
+            ></object>
           </div>
           <div class="content-box" id="content2" style="display: none">
-            <object type="text/html" data="sheet_restaurants.html"></object>
+            <object
+              type="text/html"
+              data="../sub_pages/spreadsheet_html/sheet_restaurants.html"
+            ></object>
           </div>
           <div class="content-box" id="content3" style="display: none">
-            <object type="text/html" data="sheet_dessert_only.html"></object>
+            <object
+              type="text/html"
+              data="../sub_pages/spreadsheet_html/sheet_dessert_only.html"
+            ></object>
           </div>
           <div class="content-box" id="content4" style="display: none">
             <object
               type="text/html"
-              data="sheet_coffee_and_bakery.html"
+              data="../sub_pages/spreadsheet_html/sheet_coffee_and_bakery.html"
             ></object>
           </div>
           <div class="content-box" id="content5" style="display: none">
-            <object type="text/html" data="sheet_bars.html"></object>
+            <object
+              type="text/html"
+              data="../sub_pages/spreadsheet_html/sheet_bars.html"
+            ></object>
           </div>
         </div>
       </div>

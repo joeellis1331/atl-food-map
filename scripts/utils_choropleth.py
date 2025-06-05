@@ -203,7 +203,7 @@ path.leaflet-interactive:focus {
 """))
 
 #saves map
-m.save('areas.html')
+m.save('./sub_pages/folium_maps/areas.html')
 
 
 

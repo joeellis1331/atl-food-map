@@ -71,7 +71,7 @@ def main():
 
 
     #save map to use with GitHub Pages
-    food_map.save('individuals.html')
+    food_map.save('./sub_pages/folium_maps/individuals.html')
     print("Food map successfully created, saved as individuals.html")
     #saves final pickle file
     df.to_pickle('df_food_geocode.pkl')

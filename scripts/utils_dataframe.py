@@ -39,4 +39,4 @@ def sheet_to_html(file_path):
         if sheet_name not in ['General Notes']:
             sheet_data = excel_file.parse(sheet_name)
             sheet_name = sheet_name.replace(' ', '_').lower()
-            sheet_data.to_html(f'sheet_{sheet_name}.html')
+            sheet_data.to_html(f'./sub_pages/spreadsheet_html/sheet_{sheet_name}.html')
