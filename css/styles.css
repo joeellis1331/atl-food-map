@@ -3,7 +3,7 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Futura";
 }
 
 .backdrop {
@@ -22,11 +22,6 @@ html {
   max-width: 700px;
   width: 90%;
   height: 400px;
-}
-
-h1,
-h2 {
-  font-family: "Indie Flower", cursive;
 }
 
 h1 {
@@ -51,6 +46,7 @@ h2 {
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
+  font-size: medium;
 }
 
 .btn {
@@ -64,8 +60,6 @@ h2 {
   align-items: center;
   gap: 10px;
   transition: background-color 0.3s, transform 0.3s;
-  /* font-family: "Segoe UI", sans-serif; */
-  font-family: "Indie Flower", cursive;
   font-weight: 550;
   font-size: 1.1em;
 }
@@ -82,4 +76,10 @@ h2 {
 
 .active {
   background-color: aquamarine;
+}
+
+object {
+  height: 450px;
+  width: 99%;
+  background-color: white;
 }
