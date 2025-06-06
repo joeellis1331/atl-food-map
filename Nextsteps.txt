@@ -10,12 +10,3 @@ utils_map_elements.py
 Main.py
 - Is there a way to not have to re-run the geocoding every time?
 - capture errors into a log file
-
-
-
-#######################3
-Find other maps from Koordinates.com by zip code for dekalb and gwinnett counties:
-https://koordinates.com/data/?q=gwinnett+county+ga+boundary
-
-Atlanta map from here:
-https://dpcd-coaplangis.opendata.arcgis.com/datasets/7e91b75124fc47cbab7ffdb5de1cdd0a_0/explore?location=33.848672%2C-84.234272%2C10.93
