@@ -1,3 +1,6 @@
+Fix css styles so they work for both computer and phones, right now the phone layout
+is broken. The nav bar overlaps with the content
+
 utils_choropleth.py
 - Figure out how to handle where there is only one rating in an area (will misrepresent for sure)
 
