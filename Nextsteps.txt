@@ -13,3 +13,7 @@ utils_map_elements.py
 Main.py
 - Is there a way to not have to re-run the geocoding every time?
 - capture errors into a log file
+
+
+#food color palettes
+https://colorhunt.co/palettes/food

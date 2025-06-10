@@ -7,25 +7,67 @@ html {
 }
 
 .backdrop {
-  background: url("../img/background.jpg") no-repeat center center fixed;
-  background-size: cover;
+  background-color: #819a91;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white;
+  color: #eeefe0;
+}
+
+.button-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 60px; /* explicit height for spacing calculations */
+  background-color: #819a91;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5vw;
+  gap: 5vw;
+  border-bottom: 1.5px solid #eeefe0;
+}
+
+.btn {
+  color: #eeefe0;
+  text-decoration: none;
+  padding: 2.5px 5px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+  background-color: #d1d8be80;
+  transform: scale(1.15);
+}
+
+.active {
+  background-color: #d1d8be80;
 }
 
 .content {
   padding: 10px;
-  max-width: 730px;
   width: 90%;
-  height: 400px;
+  margin-top: 70px; /* slightly more than nav height to create spacing */
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content-box {
+  width: 90%;
 }
 
 h1 {
-  font-size: 4.5em;
+  font-size: 3em;
   margin-bottom: 30px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -40,51 +82,12 @@ h2 {
 }
 
 h3 {
-  font-size: 1.0em;
+  font-size: 1em;
   margin-bottom: 10px;
   max-width: 85%; /* 👈 makes it narrower */
   margin-left: auto;
   margin-right: auto; /* 👈 centers it */
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.button-container {
-  display: flex;
-  position: fixed;
-  top: 5%;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  font-size: medium;
-}
-
-.btn {
-  color: #cbcbcb;
-  text-decoration: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 1em;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: background-color 0.3s, transform 0.3s;
-  font-weight: 550;
-  font-size: 1.1em;
-}
-
-.btn:hover {
-  background-color: #dddddd2c;
-  color: #e2e2e2;
-  transform: scale(1.15);
-}
-
-.btn img {
-  width: 24px;
-  height: 24px;
-}
-
-.active {
-  color: aquamarine;
 }
 
 object {

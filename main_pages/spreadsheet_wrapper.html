@@ -6,31 +6,45 @@
     <title>Themed Anchor Content Switcher</title>
     <link rel="stylesheet" href="../css/styles.css" />
     <style>
+      @media (max-width: 768px) {
+        .button-container {
+          height: 30px; /* mobile only, preserve spacing between nav and table headings */
+        }
+      }
+
+      .backdrop {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Optional: centers children horizontally */
+      }
       .table-headings-container {
         display: flex;
         justify-content: center;
         position: relative;
-        top: 25px;
-        gap: 0px 40px;
+        top: 65px;
+        gap: 3.5vw;
         flex-wrap: wrap;
+        font-size: 2.5vw;
       }
       .tbl-btn {
-        color: #ffffff; /* make text readable like clickable words */
+        color: #eeefe0; /* make text readable like clickable words */
         background: none; /* remove button-like background */
         border: none;
-        font-size: 1em;
         cursor: pointer;
         display: flex;
         align-items: center;
-        font-size: 1.25em;
         text-decoration: underline; /* to emphasize they're clickable */
+        padding: 2.5px 5px;
       }
+
       .tbl-btn.active {
-        color: aquamarine;
+        background-color: #d1d8be80;
+        border-radius: 8px;
         transform: scale(1.15);
       }
       .content-box {
         overflow: scroll;
+        width: 100%;
       }
     </style>
   </head>
@@ -51,37 +65,37 @@
           Coffee/Baked Goods
         </a>
         <a href="#" data-content="content5" class="tbl-btn"> Bars </a>
-        <div class="content">
-          <div class="content-box" id="content1">
-            <object
-              type="text/html"
-              data="../sub_pages/spreadsheet_html/sheet_to_try.html"
-            ></object>
-          </div>
-          <div class="content-box" id="content2" style="display: none">
-            <object
-              type="text/html"
-              data="../sub_pages/spreadsheet_html/sheet_restaurants.html"
-            ></object>
-          </div>
-          <div class="content-box" id="content3" style="display: none">
-            <object
-              type="text/html"
-              data="../sub_pages/spreadsheet_html/sheet_dessert_only.html"
-            ></object>
-          </div>
-          <div class="content-box" id="content4" style="display: none">
-            <object
-              type="text/html"
-              data="../sub_pages/spreadsheet_html/sheet_coffee_and_bakery.html"
-            ></object>
-          </div>
-          <div class="content-box" id="content5" style="display: none">
-            <object
-              type="text/html"
-              data="../sub_pages/spreadsheet_html/sheet_bars.html"
-            ></object>
-          </div>
+      </div>
+      <div class="content">
+        <div class="content-box" id="content1">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_to_try.html"
+          ></object>
+        </div>
+        <div class="content-box" id="content2" style="display: none">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_restaurants.html"
+          ></object>
+        </div>
+        <div class="content-box" id="content3" style="display: none">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_dessert_only.html"
+          ></object>
+        </div>
+        <div class="content-box" id="content4" style="display: none">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_coffee_and_bakery.html"
+          ></object>
+        </div>
+        <div class="content-box" id="content5" style="display: none">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_bars.html"
+          ></object>
         </div>
       </div>
     </div>
