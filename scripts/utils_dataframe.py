@@ -39,4 +39,21 @@ def sheet_to_html(file_path):
         if sheet_name not in ['General Notes']:
             sheet_data = excel_file.parse(sheet_name)
             sheet_name = sheet_name.replace(' ', '_').lower()
-            sheet_data.to_html(f'./sub_pages/spreadsheet_html/sheet_{sheet_name}.html')
+
+            #saves html with no index
+            html = sheet_data.to_html(index=False)
+            # Inject custom CSS for header and body font sizes
+            custom_style = """
+            <style>
+                table { width: 100%; border-collapse: collapse; }
+                th { font-size: 2vw; }
+                td { font-size: 1.5vw; }
+            </style>
+            """
+            #appends styles to html
+            html_with_style = custom_style + html
+            # Writes to file
+            with open(f'./sub_pages/spreadsheet_html/sheet_{sheet_name}.html', 'w', encoding='utf-8') as f:
+                f.write(html_with_style)
+
+

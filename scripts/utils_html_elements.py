@@ -9,53 +9,30 @@ def add_html_element(folium_map, html):
 
 ######## html elements #######
 indv_places_legend = """
-    {% macro html(this, kwargs) %}
-    <div style="
-        position: fixed;
-        bottom: 10px;
-        left: 10px;
-        z-index: 9999;
-        background-color: white;
-        border: 2px solid #ccc;
-        border-radius: 10px;
-        padding: 10px;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-        font-size: 14px;
-    ">
-        <b>Legend</b><br>
-        <i style="background: blue; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> To Try<br>
-        <i style="background: green; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> Restaurants<br>
-        <i style="background: pink; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> Dessert Only<br>
-        <i style="background: red; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> Coffee and Bakery<br>
-        <i style="background: black; width: 10px; height: 10px; float: left; margin-right: 6px;"></i> Bars
-    </div>
-    {% endmacro %}
-    """
+{% macro html(this, kwargs) %}
+<div style="
+    position: fixed;
+    bottom: 15px;
+    left: 10px;
+    z-index: 9999;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 5px;
+    font-size: 10px;
+    line-height: 1.5;
+">
+    <b>Legend</b><br>
+    <div><span style="background: blue; width: 8px; height: 8px; display: inline-block; vertical-align: middle; margin-right: 3px;"></span><span style="vertical-align: middle;">To Try</span></div>
+    <div><span style="background: green; width: 8px; height: 8px; display: inline-block; vertical-align: middle; margin-right: 3px;"></span><span style="vertical-align: middle;">Restaurants</span></div>
+    <div><span style="background: pink; width: 8px; height: 8px; display: inline-block; vertical-align: middle; margin-right: 3px;"></span><span style="vertical-align: middle;">Dessert Only</span></div>
+    <div><span style="background: red; width: 8px; height: 8px; display: inline-block; vertical-align: middle; margin-right: 3px;"></span><span style="vertical-align: middle;">Coffee and Bakery</span></div>
+    <div><span style="background: black; width: 8px; height: 8px; display: inline-block; vertical-align: middle; margin-right: 3px;"></span><span style="vertical-align: middle;">Bars</span></div>
+</div>
+{% endmacro %}
+"""
 
-indv_watermark = """
-    {% macro html(this, kwargs) %}
-    <style>
-        #draft-watermark {
-            position: fixed;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(255, 0, 0, 0.6);
-            color: white;
-            padding: 5px 12px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 4px;
-            z-index: 9999;
-            pointer-events: none;
-        }
-    </style>
-    <div id='draft-watermark'>DRAFT VERSION</div>
-    {% endmacro %}
-    """
-
-
-#Instead of interpolating immediately with an f-string, define the template as a regular string 
+#Instead of interpolating immediately with an f-string, define the template as a regular string
 #with placeholders, and format it later when you have the values.
 choro_legend_template = """
 {{% macro html(this, kwargs) %}}

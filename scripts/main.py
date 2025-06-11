@@ -63,10 +63,8 @@ def main():
     individuals_map = utils_mapping.create_map(city_center='Atlanta, Georgia, USA')
     #adds locations on map
     map_individual.add_markers_to_map(df_gsheet, individuals_map)
-    #list of html elements to add
-    html_list = [utils_html_elements.indv_places_legend, utils_html_elements.indv_watermark]
-    for html in html_list:
-        utils_html_elements.add_html_element(individuals_map, html)
+    #html legend element to add
+    utils_html_elements.add_html_element(individuals_map, utils_html_elements.indv_places_legend)
     individuals_map.save('./sub_pages/folium_maps/individuals.html')
     print("Individual locations map successfully created, saved as individuals.html")
 
