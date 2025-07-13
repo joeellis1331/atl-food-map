@@ -1,5 +1,8 @@
 utils_choropleth.py
-- Figure out how to handle where there is only one rating in an area (will misrepresent for sure)
+- use bayesian averaging to rank neighborhoods. see this link:
+https://www.algolia.com/doc/guides/managing-results/must-do/custom-ranking/how-to/bayesian-average/
+    - maybe add a rank column to the dataframe and present a list of the top ranked neighborhoods. Set up 
+    similar to spreadsheets where you can toggle either map element or table element?
 
 utils_map_elements.py
 - add a new filter group to go by star rating and fully plant based

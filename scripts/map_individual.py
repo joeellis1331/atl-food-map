@@ -32,7 +32,7 @@ def add_markers_to_map(df, folium_map):
                 #text to go in popup, <strong> is bold, and add parameters to ensure text fits nicer
                 iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><u>Rating:</u> {row['Stars (of 10)']} of 10<br><u>Vegan:</u> {row['Vegan']}<br><br>{row['Additional Notes']}')
             else:
-                iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><u>Place Type:</u> {row['Type']}<br><br>Havent Tried Yet!')
+                iframe = folium.IFrame(f'<strong>{row['Name']}</strong><br><u>Place Type:</u> {row['Type']}<br><br>Havent Tried Yet! -- {row['Additional Notes']}')
 
             #sets popup width and height parameters
             popup = folium.Popup(iframe, min_width=200, max_width=400)

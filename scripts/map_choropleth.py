@@ -64,7 +64,7 @@ def score_areas(df_ratings, df_geo):
             if ind_list.size != 0 and ind_list.size < 2:
                 #gets score list
                 list_to_update = df_geo.at[ind_list[0], 'score_list']
-                list_to_update.append(row._8) #stars out of 5 column
+                list_to_update.append(row._9) #stars out of 5 column
                 df_geo.at[ind_list[0], 'score_list'] = list_to_update
 
     #Count total ratings in each geographic region
