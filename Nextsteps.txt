@@ -1,7 +1,5 @@
 utils_choropleth.py
-- use bayesian averaging to rank neighborhoods. see this link:
-https://www.algolia.com/doc/guides/managing-results/must-do/custom-ranking/how-to/bayesian-average/
-    - maybe add a rank column to the dataframe and present a list of the top ranked neighborhoods. Set up 
+- maybe add a rank column to the dataframe and present a list of the top ranked neighborhoods. Set up 
     similar to spreadsheets where you can toggle either map element or table element?
 
 utils_map_elements.py

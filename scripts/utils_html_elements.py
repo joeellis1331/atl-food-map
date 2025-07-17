@@ -50,11 +50,11 @@ choro_legend_template = """
     box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
 ">
     <div style="margin-bottom: 15px;">
-        <b>Average Rating</b>
+        <b>Rating (Bayes Average)</b>
         <div style="
             width: 100%;
             height: 10px;
-            background: linear-gradient(to right, #fff5f0, #fcbba1, #fc9272, #fb6a4a, #de2d26);
+            background: linear-gradient(to right, #ffffb2, #fecc5c, #fd8d3c, #f03b20, #bd0026);
             margin-top: 5px;
             border: 1px solid #ccc;
         "></div>

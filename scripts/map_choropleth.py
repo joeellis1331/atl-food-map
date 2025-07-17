@@ -44,6 +44,35 @@ def curate_geojson():
 
 
 '''
+Next two functions work together to get the bayes average.
+This is a better representation of the best neighborhoods them simply
+average star rating
+'''
+#areaAvg = df_geo['avg_score']; areaCount = df_geo['total_ratings']
+def bayes_average(m, c, areaAvg, areaCount):
+    return round(((areaAvg * areaCount) + (c * m)) / (areaCount + c), 3)
+
+
+#see this tutorial: https://www.algolia.com/doc/guides/managing-results/must-do/custom-ranking/how-to/bayesian-average/#coding-the-bayesian-average
+def calc_bayesian_avg(df_geo):
+    #subset dataframe to only include areas with ratings
+    has_rating = df_geo[df_geo['total_ratings'] > 0]
+
+    #create one big list with all scores
+    all_scores = has_rating['score_list'].sum()
+    #gets average to set as constant m
+    m = sum(all_scores) / len(all_scores)
+
+    #get lower quartile for total reviews for each area with a rating
+    c = numpy.percentile(has_rating['total_ratings'], 25)
+
+    #calculate avg
+    df_geo['bayes_avg'] = df_geo.apply(lambda x: bayes_average(m, c, x['avg_score'], x['total_ratings']), axis = 1)
+
+    return df_geo
+
+
+'''
 Match scores into areas
 '''
 def score_areas(df_ratings, df_geo):
@@ -75,22 +104,26 @@ def score_areas(df_ratings, df_geo):
     #adds ID column, need it for choropleth map key_on parameter
     df_geo['ID'] = df_geo.index
 
+    #add the bayes average to dataframe
+    df_geo = calc_bayesian_avg(df_geo)
+
     return df_geo
+
 
 def map_scored_areas(folium_map, df_geo):
     #layer control feature groups
-    fg1 = folium.FeatureGroup(name='Average Rating', overlay=False).add_to(folium_map)
+    fg1 = folium.FeatureGroup(name='Rating (Bayes Average)', overlay=False).add_to(folium_map)
     fg2 = folium.FeatureGroup(name='Total Reviews', overlay=False).add_to(folium_map)
 
-    ##### choropleth of the average restaurant score #####
+    ##### choropleth of the bayes average of restaurant scores #####
     cp_avg = folium.Choropleth(
         geo_data=df_geo,
-        name='Average Rating',
+        name='Rating (Bayes Average)',
         data=df_geo,
-        columns=['ID', 'avg_score'],
+        columns=['ID', 'bayes_avg'],
         key_on='feature.properties.ID',
         bins=[0, 1, 2, 3, 4, 5],
-        fill_color='Reds',
+        fill_color='YlOrRd',
         fill_opacity=0.5,
         line_opacity=0.2,
         nan_fill_color='gray',
@@ -100,8 +133,8 @@ def map_scored_areas(folium_map, df_geo):
     #adding a tooltip/hover displaying information when hovering over
     #fields and aliases are in order, same length for each
     folium.GeoJsonTooltip(
-        fields=['NAME', 'map', 'ZIPCODE', 'total_ratings', 'avg_score'],
-        aliases=['Neighborhood', 'County', 'Zipcode', 'Total Places Reviewed', 'Average Rating']
+        fields=['NAME', 'map', 'ZIPCODE', 'bayes_avg', 'total_ratings', 'avg_score'],
+        aliases=['Neighborhood', 'County', 'Zipcode', 'Bayes Average', 'Total Places Reviewed', 'Average Rating']
         ).add_to(cp_avg)
     popup = folium.GeoJsonPopup(
         fields=["name", "change"],
@@ -128,8 +161,8 @@ def map_scored_areas(folium_map, df_geo):
     #adding a tooltip/hover displaying information when hovering over
     #fields and aliases are in order, same length for each
     folium.GeoJsonTooltip(
-        fields=['NAME', 'map', 'ZIPCODE', 'total_ratings', 'avg_score'],
-        aliases=['Neighborhood', 'County', 'Zipcode', 'Total Places Reviewed', 'Average Rating']
+        fields=['NAME', 'map', 'ZIPCODE', 'bayes_avg', 'total_ratings', 'avg_score'],
+        aliases=['Neighborhood', 'County', 'Zipcode', 'Bayes Average', 'Total Places Reviewed', 'Average Rating']
         ).add_to(cp_total)
 
     #adds groups to be able to be selectable layers
