@@ -50,6 +50,13 @@
       }
     </style>
   </head>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
   <body>
     <div class="backdrop">
       <nav class="button-container">
@@ -107,7 +114,6 @@
 </html>
 
 <script>
-  // Map each tab to the file it should load
   const tableFiles = {
     content1: "../sub_pages/spreadsheet_html/sheet_to_try.html",
     content2: "../sub_pages/spreadsheet_html/sheet_restaurants.html",
@@ -118,45 +124,40 @@
 
   async function loadTable(contentId) {
     const box = document.getElementById(contentId);
-    // Only load once per tab
     if (!box.dataset.loaded) {
       const response = await fetch(tableFiles[contentId]);
       const html = await response.text();
       box.innerHTML = html;
       box.dataset.loaded = "true";
 
-      // Initialize DataTables on any <table> inside this box
+      // ✅ Initialize DataTables on the injected table
       box.querySelectorAll("table").forEach(tbl => {
-        new DataTable(tbl, {
+        $(tbl).DataTable({
           paging: true,
           searching: true,
           ordering: true,
-          responsive: true
+          responsive: true,
+          pageLength: 10,   // default rows per page
+          lengthMenu: [5, 10, 25, 50, 100] // dropdown options
         });
       });
     }
   }
 
-  // Handle tab switching
   document.querySelectorAll(".table-headings-container a").forEach(anchor => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
-
-      // Update active state
       document.querySelectorAll(".table-headings-container a")
         .forEach(a => a.classList.remove("active"));
       this.classList.add("active");
 
-      // Hide all boxes
       document.querySelectorAll(".content-box")
         .forEach(box => box.style.display = "none");
 
-      // Show the chosen one
       const id = this.getAttribute("data-content");
       const box = document.getElementById(id);
       box.style.display = "block";
 
-      // Load its table if needed
       loadTable(id);
     });
   });
@@ -164,4 +165,3 @@
   // Load first tab on page load
   loadTable("content1");
 </script>
-
