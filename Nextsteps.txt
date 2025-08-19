@@ -18,6 +18,10 @@ utils_map_elements.py
     - maybe even a route finding function?
 
 
+########### Notes about branches
+bottom left of VS code window, click on branch name (main or development) to pull up menu as to which branch
+to switch to. Created development branch to test new changes without breaking the HTML. It still feels complex
+to me so I need that fallback
 
 #food color palettes
 https://colorhunt.co/palettes/food
