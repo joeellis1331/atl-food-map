@@ -1,16 +1,22 @@
+spreadsheets tabs
+- Use datatables (https://datatables.net/) to improve the spreadsheet functionality with
+    my static webpage. It should work without having to host something on the cloud or whatever
+- change into nav bar dropdown with each spreadsheet then having a title rather than the second
+    series of headings
+
+Main.py
+- Is there a way to not have to re-run the geocoding every time?
+- capture errors into a log file
+
 utils_choropleth.py
 - maybe add a rank column to the dataframe and present a list of the top ranked neighborhoods. Set up 
     similar to spreadsheets where you can toggle either map element or table element?
 
 utils_map_elements.py
-- add a new filter group to go by star rating and fully plant based
 - add a search function to zoom in on an address
     - mile search radius within that address?
     - maybe even a route finding function?
 
-Main.py
-- Is there a way to not have to re-run the geocoding every time?
-- capture errors into a log file
 
 
 #food color palettes
