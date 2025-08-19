@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -50,13 +47,6 @@
       }
     </style>
   </head>
-
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- DataTables -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
   <body>
     <div class="backdrop">
       <nav class="button-container">
@@ -77,14 +67,34 @@
       </div>
       <div class="content">
         <div class="content-box" id="content1">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_to_try.html"
+          ></object>
         </div>
         <div class="content-box" id="content2" style="display: none">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_restaurants.html"
+          ></object>
         </div>
         <div class="content-box" id="content3" style="display: none">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_dessert_only.html"
+          ></object>
         </div>
         <div class="content-box" id="content4" style="display: none">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_coffee_and_bakery.html"
+          ></object>
         </div>
         <div class="content-box" id="content5" style="display: none">
+          <object
+            type="text/html"
+            data="../sub_pages/spreadsheet_html/sheet_bars.html"
+          ></object>
         </div>
       </div>
     </div>
@@ -112,56 +122,3 @@
     </script>
   </body>
 </html>
-
-<script>
-  const tableFiles = {
-    content1: "../sub_pages/spreadsheet_html/sheet_to_try.html",
-    content2: "../sub_pages/spreadsheet_html/sheet_restaurants.html",
-    content3: "../sub_pages/spreadsheet_html/sheet_dessert_only.html",
-    content4: "../sub_pages/spreadsheet_html/sheet_coffee_and_bakery.html",
-    content5: "../sub_pages/spreadsheet_html/sheet_bars.html"
-  };
-
-  async function loadTable(contentId) {
-    const box = document.getElementById(contentId);
-    if (!box.dataset.loaded) {
-      const response = await fetch(tableFiles[contentId]);
-      const html = await response.text();
-      box.innerHTML = html;
-      box.dataset.loaded = "true";
-
-      // ✅ Initialize DataTables on the injected table
-      box.querySelectorAll("table").forEach(tbl => {
-        $(tbl).DataTable({
-          paging: true,
-          searching: true,
-          ordering: true,
-          responsive: true,
-          pageLength: 10,   // default rows per page
-          lengthMenu: [5, 10, 25, 50, 100] // dropdown options
-        });
-      });
-    }
-  }
-
-  document.querySelectorAll(".table-headings-container a").forEach(anchor => {
-    anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-      document.querySelectorAll(".table-headings-container a")
-        .forEach(a => a.classList.remove("active"));
-      this.classList.add("active");
-
-      document.querySelectorAll(".content-box")
-        .forEach(box => box.style.display = "none");
-
-      const id = this.getAttribute("data-content");
-      const box = document.getElementById(id);
-      box.style.display = "block";
-
-      loadTable(id);
-    });
-  });
-
-  // Load first tab on page load
-  loadTable("content1");
-</script>
