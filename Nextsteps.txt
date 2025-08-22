@@ -1,3 +1,12 @@
+SUGGESTED/POTENTIAL ENHANCEMENTS
+map_choropleth.py
+- Adjust colors to highlight differences more. Currently they all look very similar on initial eye inspection.
+    Also make sure they are okay for people with color blindness
+
+Index.html
+- Convert main page headings to Maps, Lists, Superlatives. Where Maps contains a drop down
+    of all and best neighborhoods. Lists contains a drop down of each of the 5
+
 spreadsheets tabs
 - Use datatables (https://datatables.net/) to improve the spreadsheet functionality with
     my static webpage. It should work without having to host something on the cloud or whatever
@@ -9,7 +18,7 @@ Main.py
 - capture errors into a log file
 
 utils_choropleth.py
-- maybe add a rank column to the dataframe and present a list of the top ranked neighborhoods. Set up 
+- maybe add a rank column to the dataframe and present a list of the top ranked neighborhoods. Set up
     similar to spreadsheets where you can toggle either map element or table element?
 
 utils_map_elements.py
