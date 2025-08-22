@@ -1,4 +1,5 @@
 import pandas
+import numpy
 
 '''
 this function takes the main google sheet and combined all the separated sheets into one big dataframe.
@@ -38,6 +39,8 @@ def sheet_to_html(file_path):
         #ignores general info and to try list sheets
         if sheet_name not in ['General Notes']:
             sheet_data = excel_file.parse(sheet_name)
+            #sheets display with NaN, this makes sure it displays as "None" as intended
+            sheet_data = sheet_data.replace({numpy.nan: None})
             sheet_name = sheet_name.replace(' ', '_').lower()
 
             #saves html with no index
