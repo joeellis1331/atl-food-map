@@ -10,6 +10,7 @@ from branca.element import Template, MacroElement, Element
 import matplotlib.pyplot as plt
 from itertools import combinations
 
+
 '''
 takes individual shapefiles/geojsons manually curated using QGIS and combined into one big geojson.
 Find other maps from Koordinates.com by zip code for dekalb and gwinnett counties:
@@ -110,7 +111,7 @@ def score_areas(df_ratings, df_geo):
     return df_geo
 
 
-def map_scored_areas(folium_map, df_geo):
+def map_scored_areas(folium_map, df_geo, meta_dict):
     #layer control feature groups
     fg1 = folium.FeatureGroup(name='Rating (Bayes Average)', overlay=False).add_to(folium_map)
     fg2 = folium.FeatureGroup(name='Total Reviews', overlay=False).add_to(folium_map)
@@ -122,8 +123,8 @@ def map_scored_areas(folium_map, df_geo):
         data=df_geo,
         columns=['ID', 'bayes_avg'],
         key_on='feature.properties.ID',
-        bins=[0, 1, 2, 3, 4, 5],
-        fill_color='YlOrRd',
+        fill_color=meta_dict['ratings_color'],
+        bins=numpy.linspace(meta_dict['ratings_min'], meta_dict['ratings_max'], 5 + 1).tolist(),
         fill_opacity=0.5,
         line_opacity=0.2,
         nan_fill_color='gray',
@@ -144,6 +145,7 @@ def map_scored_areas(folium_map, df_geo):
         style="background-color: yellow;",
     )
 
+
     ##### choropleth of the restaurants reviewed in each region #####
     cp_total = folium.Choropleth(
         geo_data=df_geo,
@@ -151,7 +153,8 @@ def map_scored_areas(folium_map, df_geo):
         data=df_geo,
         columns=['ID', 'total_ratings'],
         key_on='feature.properties.ID',
-        fill_color='Greens',
+        fill_color=meta_dict['reviews_color'],
+        bins=numpy.linspace(meta_dict['reviews_min'], meta_dict['reviews_max'], 5 + 1).tolist(),
         fill_opacity=0.5,
         line_opacity=0.2,
         nan_fill_color='gray',
@@ -164,6 +167,7 @@ def map_scored_areas(folium_map, df_geo):
         fields=['NAME', 'map', 'ZIPCODE', 'bayes_avg', 'total_ratings', 'avg_score'],
         aliases=['Neighborhood', 'County', 'Zipcode', 'Bayes Average', 'Total Places Reviewed', 'Average Rating']
         ).add_to(cp_total)
+
 
     #adds groups to be able to be selectable layers
     #MUST COME AFTER MARKERS ARE ADDED

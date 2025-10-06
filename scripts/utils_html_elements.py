@@ -54,7 +54,7 @@ choro_legend_template = """
         <div style="
             width: 100%;
             height: 10px;
-            background: linear-gradient(to right, #ffffb2, #fecc5c, #fd8d3c, #f03b20, #bd0026);
+            background: {ratings_color};
             margin-top: 5px;
             border: 1px solid #ccc;
         "></div>
@@ -68,7 +68,7 @@ choro_legend_template = """
         <div style="
             width: 100%;
             height: 10px;
-            background: linear-gradient(to right, #e5f5e0, #a1d99b, #31a354);
+            background: {reviews_color};
             margin-top: 5px;
             border: 1px solid #ccc;
         "></div>

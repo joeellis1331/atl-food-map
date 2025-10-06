@@ -7,6 +7,7 @@ import utils_geocoding
 import map_individual
 import utils_html_elements
 import utils_mapping
+import utils_color_to_css
 import map_choropleth
 from branca.element import Template, MacroElement, Element
 
@@ -74,16 +75,37 @@ def main():
     df_geo = map_choropleth.curate_geojson()
     #calculate scoring for each area, add to geojson
     df_geo = map_choropleth.score_areas(df_gsheet, df_geo)
+
+    #this defines some useful parameters to use throughout
+    choro_meta_dict = {
+        'ratings_color':'PuRd',
+        'ratings_min':df_geo['bayes_avg'][df_geo['bayes_avg'].notna()].min(),
+        'ratings_max':df_geo['bayes_avg'][df_geo['bayes_avg'].notna()].max(),
+        'reviews_color':'Greens',
+        'reviews_min':df_geo['total_ratings'].min(),
+        'reviews_max':df_geo['total_ratings'].max()
+    }
+
     #make choropleth
-    map_choropleth.map_scored_areas(choro_map, df_geo)
+    map_choropleth.map_scored_areas(choro_map, df_geo, choro_meta_dict)
 
     ## adding legend elements
     # replaces string placeholders in html with actual values
     choro_legend_html = utils_html_elements.choro_legend_template.format(
-        rating_min=0.0,
-        rating_max=5.0,
-        reviews_min=int(df_geo['total_ratings'].min()),
-        reviews_max=int(df_geo['total_ratings'].max())
+        ratings_color=utils_color_to_css.make_HTML_cmap_from_branca(
+            choro_meta_dict['ratings_color'],
+            choro_meta_dict['ratings_min'],
+            choro_meta_dict['ratings_max']
+            ),
+        reviews_color=utils_color_to_css.make_HTML_cmap_from_branca(
+            choro_meta_dict['reviews_color'],
+            choro_meta_dict['reviews_min'],
+            choro_meta_dict['reviews_max']
+            ),
+        rating_min=choro_meta_dict['ratings_min'],
+        rating_max=choro_meta_dict['ratings_max'],
+        reviews_min=choro_meta_dict['reviews_min'],
+        reviews_max=choro_meta_dict['reviews_max']
     )
     #adds the legend to the choropleth map
     utils_html_elements.add_html_element(choro_map, choro_legend_html)
