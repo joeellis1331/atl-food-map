@@ -78,7 +78,7 @@ def main():
 
     #this defines some useful parameters to use throughout
     choro_meta_dict = {
-        'ratings_color':'PuRd',
+        'ratings_color':'Oranges',
         'ratings_min':df_geo['bayes_avg'][df_geo['bayes_avg'].notna()].min(),
         'ratings_max':df_geo['bayes_avg'][df_geo['bayes_avg'].notna()].max(),
         'reviews_color':'Greens',
