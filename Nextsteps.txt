@@ -1,4 +1,9 @@
 SUGGESTED/POTENTIAL ENHANCEMENTS
+Main.py
+- Caputure the final output, checks against new xlsx and only runs new geocode or makes
+    changes when there isn't a match
+- capture geocoding errors into a log file
+
 map_choropleth.py
 - Adjust colors to highlight differences more. Currently they all look very similar on initial eye inspection.
     Also make sure they are okay for people with color blindness
@@ -13,9 +18,6 @@ spreadsheets tabs
 - change into nav bar dropdown with each spreadsheet then having a title rather than the second
     series of headings
 
-Main.py
-- Is there a way to not have to re-run the geocoding every time?
-- capture errors into a log file
 
 utils_choropleth.py
 - maybe add a rank column to the dataframe and present a list of the top ranked neighborhoods. Set up
