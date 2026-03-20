@@ -1,13 +1,24 @@
 import time
 import pandas
 from geopy.geocoders import Nominatim
+from geopy.extra.rate_limiter import RateLimiter
 from functools import lru_cache
 import re
+import pickle
+import os
+from geopy.extra.rate_limiter import RateLimiter
 
 # Initialize geolocator with longer timeout
-geolocator = Nominatim(user_agent="ATL_food_map", timeout=10)
+geolocator = Nominatim(user_agent="ATL_food_map (joeellis.2013@gmail.com)", timeout=10)
+#rate limits API calls, helps not get timed out
+geocode = RateLimiter(
+    geolocator.geocode,
+    min_delay_seconds=1,
+    max_retries=3,
+    error_wait_seconds=5
+)
 
-# need to do some cleaning because OpenStreetMap is not as robust as google maps
+'''cleans addresses because OpenStreetMap is not as robust as google maps'''
 def clean_address(address):
     if not isinstance(address, str):
         return ""
@@ -60,49 +71,80 @@ def clean_address(address):
 
     return address
 
+'''
+normalizes subtle differences in query, for example trailing spaces and such
+'''
+def normalize_query(q):
+    if not isinstance(q, str):
+        return ""
+    return re.sub(r'\s+', ' ', q.strip().lower())
 
-# # Caching decorator for geocoding
-@lru_cache(maxsize=None)
-#initial geocoding function
+'''
+This is the wrapper geocoding function, it tries initial and fallback options, check caches
+'''
 def try_geocode(query, fallback):
-    if fallback == False:
-        try:
-            location = geolocator.geocode(query, country_codes='US')
-            if location:
-                return location.latitude, location.longitude
-        except Exception as e:
-            return None, None
+    # build the ACTUAL query first
+    if not fallback:
+        final_query = query
     else:
-        try:
-            location = lambda query: geolocator.geocode("%s, Georgia, United States" % query)
-            if location:
-                address = location(query)
-                return address.latitude, address.longitude
-        except Exception as e:
-            return None, None
+        final_query = f"{query}, Georgia, United States"
 
-    return None, None
+    # normalize AFTER final query is defined
+    key = normalize_query(final_query)
+
+    # check cache
+    if key in geocode_cache:
+        return geocode_cache[key]
+
+    try:
+        location = geocode(final_query, country_codes='US')
+
+        if location:
+            result = (location.latitude, location.longitude)
+            geocode_cache[key] = result  # only cache successful results
+        else:
+            result = (None, None)
+
+    except Exception:
+        result = (None, None)
+
+    return result
 
 '''
 main geocode wrapper function, utilizes openstreetmap as geocoder.
 First pass is to use the address, if openstreetmap doesn't recognize the address (it is community curated
 therefore sometimes the address doesn't match google exactly) it uses the place name in hope to hit a match
 '''
-def geocode_with_fallback(row):
+def geocode_with_fallback(row, geocode_errors):
+    #cleans up any abbreviation in address
     address = clean_address(row.get('Location', ''))
     name = row.get('Name', '')
 
     #trys to geocode based on the address
-    name_fallback = False
-    lat, lon = try_geocode(address, name_fallback)
+    lat, lon = try_geocode(address, False)
 
     #if address doesn't work, falls back to trying just restaurant name
     if lat is None or lon is None:
-        name_fallback = True
         #uses alternative function
-        lat, lon = try_geocode(name, name_fallback)
+        lat, lon = try_geocode(name, True)
         #if fails again, doesn't geocode
         if lat is None or lon is None:
-            print(f"WARING: Geocoding failed for both address and name -> '{address}' / '{name}'")
+            geocode_errors.append(f"'{address}' / '{name}'")
 
     return lat, lon
+
+
+'''
+Establishes a geocoding cache
+'''
+CACHE_FILE = "geocode_cache.pkl"
+# load cache at import
+if os.path.exists(CACHE_FILE):
+    with open(CACHE_FILE, "rb") as f:
+        geocode_cache = pickle.load(f)
+else:
+    geocode_cache = {}
+
+def save_cache():
+    with open(CACHE_FILE, "wb") as f:
+        pickle.dump(geocode_cache, f)

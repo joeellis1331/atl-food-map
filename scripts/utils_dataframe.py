@@ -30,6 +30,23 @@ def reformat_sheet(file_path):
     return combined_df
 
 '''
+this function identifies new additions to the gsheet xlsx file compared to the df_food_geocode.pkl
+'''
+def find_new_entries(df_gsheet, df_gsheet_old):
+    #loads previous geocoded data, drops coodinates for now to compare to new xlsx
+    old_df = df_gsheet_old.drop(['coordinates', 'latitude', 'longitude'], axis=1)
+    #merges df, added _merge column, left only are the new entries
+    merge_df = df_gsheet.merge(
+        old_df,
+        on = list(df_gsheet.columns),
+        how = "left",
+        indicator = True
+    )
+    #filters out for only new entires
+    new_entries = merge_df[merge_df['_merge'] == "left_only"].drop('_merge', axis = 1)
+    return new_entries
+
+'''
 this function returns each sheet as a html, to use to display in webpage
 '''
 def sheet_to_html(file_path):

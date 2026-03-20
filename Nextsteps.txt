@@ -1,7 +1,5 @@
 SUGGESTED/POTENTIAL ENHANCEMENTS
 Main.py
-- Caputure the final output, checks against new xlsx and only runs new geocode or makes
-    changes when there isn't a match
 - capture geocoding errors into a log file
 
 map_choropleth.py
