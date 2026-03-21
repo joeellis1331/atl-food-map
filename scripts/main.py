@@ -45,10 +45,10 @@ def main():
 
     ####### Geocodes new entries ##################
     if not new_entries.empty:
-        print('Geocoding new entries......')
+        print(f'Geocoding {len(new_entries)} new entries......')
         #collects all errors for geocoding
         geocode_errors = []
-        #tries geocoding
+        #### tries geocoding
         new_entries['coordinates'] = new_entries.apply(lambda row: utils_geocoding.geocode_with_fallback(row, geocode_errors), axis=1)
         #log for errors
         if geocode_errors:

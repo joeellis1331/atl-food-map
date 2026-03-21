@@ -18,6 +18,34 @@ geocode = RateLimiter(
     error_wait_seconds=5
 )
 
+#sets up/loads cache file for geocode calls
+CACHE_FILE = "geocode_cache.pkl"
+# load cache at import
+if os.path.exists(CACHE_FILE):
+    with open(CACHE_FILE, "rb") as f:
+        geocode_cache = pickle.load(f)
+else:
+    geocode_cache = {}
+
+#########################################
+
+'''
+saves cache file
+'''
+def save_cache():
+    with open(CACHE_FILE, "wb") as f:
+        pickle.dump(geocode_cache, f)
+
+'''
+normalizes subtle differences in query
+'''
+def normalize_query(q):
+    #checks to see if query is none, na, etc.
+    if not isinstance(q, str):
+        return ""
+    #strips leading/trailing, makes everything lower
+    return re.sub(r'\s+', ' ', q.strip().lower())
+
 '''cleans addresses because OpenStreetMap is not as robust as google maps'''
 def clean_address(address):
     if not isinstance(address, str):
@@ -71,28 +99,21 @@ def clean_address(address):
 
     return address
 
-'''
-normalizes subtle differences in query, for example trailing spaces and such
-'''
-def normalize_query(q):
-    if not isinstance(q, str):
-        return ""
-    return re.sub(r'\s+', ' ', q.strip().lower())
 
 '''
 This is the wrapper geocoding function, it tries initial and fallback options, check caches
 '''
 def try_geocode(query, fallback):
-    # build the ACTUAL query first
+    # build the full query, added GA, USA helps
     if not fallback:
         final_query = query
     else:
         final_query = f"{query}, Georgia, United States"
 
-    # normalize AFTER final query is defined
+    # normalizes final query, sets it as "key"
     key = normalize_query(final_query)
 
-    # check cache
+    # checks if exact same query has been run before to avoid repeated API calls
     if key in geocode_cache:
         return geocode_cache[key]
 
@@ -101,7 +122,8 @@ def try_geocode(query, fallback):
 
         if location:
             result = (location.latitude, location.longitude)
-            geocode_cache[key] = result  # only cache successful results
+            #cache successful results
+            geocode_cache[key] = result
         else:
             result = (None, None)
 
@@ -132,19 +154,3 @@ def geocode_with_fallback(row, geocode_errors):
             geocode_errors.append(f"'{address}' / '{name}'")
 
     return lat, lon
-
-
-'''
-Establishes a geocoding cache
-'''
-CACHE_FILE = "geocode_cache.pkl"
-# load cache at import
-if os.path.exists(CACHE_FILE):
-    with open(CACHE_FILE, "rb") as f:
-        geocode_cache = pickle.load(f)
-else:
-    geocode_cache = {}
-
-def save_cache():
-    with open(CACHE_FILE, "wb") as f:
-        pickle.dump(geocode_cache, f)

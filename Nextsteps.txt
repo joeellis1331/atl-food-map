@@ -1,6 +1,4 @@
 SUGGESTED/POTENTIAL ENHANCEMENTS
-Main.py
-- capture geocoding errors into a log file
 
 map_choropleth.py
 - Adjust colors to highlight differences more. Currently they all look very similar on initial eye inspection.
