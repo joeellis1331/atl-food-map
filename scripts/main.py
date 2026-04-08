@@ -38,35 +38,46 @@ def main():
     print("Finding new entires....")
     #combines all sheets from new into one for checking
     df_gsheet_new = utils_dataframe.reformat_sheet(args.gsheet_path)
+    #makes sure there is no duplicate entries by accident
+    df_gsheet_new = df_gsheet_new.drop_duplicates(subset=['Name', 'Location'])
     #loads previous data
     df_gsheet_old = pandas.read_pickle('df_master.pkl')
-    #finds new entries and/or changes to old ones
-    new_entries = utils_dataframe.find_new_entries(df_gsheet_new, df_gsheet_old)
+    #finds new entries and/or updates older ones as needed
+    df_gsheet_old_updated, existing_keep, rows_to_geocode = utils_dataframe.upsert_entries(df_gsheet_new, df_gsheet_old)
 
     ####### Geocodes new entries ##################
-    if not new_entries.empty:
-        print(f'Geocoding {len(new_entries)} new entries......')
+    if not rows_to_geocode.empty:
+        print(f'Geocoding {len(rows_to_geocode)} new entries......')
         #collects all errors for geocoding
         geocode_errors = []
         #### tries geocoding
-        new_entries['coordinates'] = new_entries.apply(lambda row: utils_geocoding.geocode_with_fallback(row, geocode_errors), axis=1)
-        #log for errors
+        rows_to_geocode[['latitude', 'longitude']] = rows_to_geocode.apply(
+            lambda row: utils_geocoding.geocode_with_fallback(row, geocode_errors),
+            axis=1,
+            result_type='expand'
+        )
+        #makes sure no failed geocodes persist in final df
+        rows_to_geocode = rows_to_geocode.dropna(subset=['latitude', 'longitude'])
+        # log errors
         if geocode_errors:
+            print("Errors occurred: see geocode_errors.log for details...")
             with open("geocode_errors.log", 'w') as file:
                 file.write('\n'.join(geocode_errors))
-            f"\n{len(geocode_errors)} geocoding failures. See ./log/geocoding_errors.log\n"
         #saves cache for geocoding
         utils_geocoding.save_cache()
-        #### splits lat and long into new columns, drops any rows that didnt get geocoded
-        new_entries[['latitude', 'longitude']] = pandas.DataFrame(new_entries['coordinates'].tolist(), index=new_entries.index)
-        new_entries = new_entries.dropna(subset=['latitude', 'longitude'])
         #### update master datframe #####################
-        df_master = pandas.concat([df_gsheet_old, new_entries], ignore_index=True)
-        df_master.to_pickle('df_master.pkl') #save
+        df_master = pandas.concat([df_gsheet_old_updated, existing_keep, rows_to_geocode], ignore_index = True)
+        #ensures no duplicates
+        df_master = df_master.drop_duplicates(subset=['Name', 'Location'], keep = 'last')
+        df_master.to_pickle('df_master.pkl')
     else:
         print('No new entries, continuing to mapping...')
 
-
+    ######################################################
+    ##          Allows for editing of place names       ##
+    ######################################################
+    print('Check for name updates/misspellings...')
+    utils_dataframe.update_name('df_master.pkl', 'Name', 0.8)
 
     ####################################################
     ##          updating map section                  ##
